@@ -1,0 +1,20 @@
+using JuMP, HiGHS
+
+m = Model(HiGHS.Optimizer)
+
+@variable(m, g)
+@variable(m, p[1:3] >= 0)
+
+@objective(m, Max, g)
+
+@constraint(m, sum(p) == 1)
+# @constraint(m, p[1] +  p[2] + p[3] == 1)
+@constraint(m, 8*p[1] + 4*p[2] + 4*p[3] >= g)
+@constraint(m, 2*p[1] + 6*p[2] + 7*p[3] >= g)
+@constraint(m, 5*p[1] + 3*p[2] + 9*p[3] >= g)
+
+@constraint(m, p[1] <= 1)
+@constraint(m, p[2] <= 1)
+@constraint(m, p[3] <= 1)
+
+optimize!(m)
